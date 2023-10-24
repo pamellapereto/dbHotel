@@ -1,5 +1,7 @@
 show databases;
 
+show tables;
+
 /* SELECIONAR O BANCO */
 use dbPamella;
 
@@ -150,6 +152,12 @@ cofre digital, frigobar abastecido, banheiro com secador de cabelo, amenities e 
 "https://images.trvl-media.com/lodging/1000000/40000/34900/34877/7ccc8057.jpg?impolicy=resizecrop&rw=500&ra=fit", 572.90, "sim", "King Size", "não");
 
 
+insert into quartos (andar, numeroQuarto, tipoQuarto, ocupacaoMax, situacao, nome, descricao, foto, preco, cafeDaManha, tipoCama, varanda) values
+("6º", "602", "Luxo", 2, "não", "Júnior", "Quarto com wi-fi, frigobar e vista para o mar.",
+"https://cf.bstatic.com/xdata/images/hotel/max1024x768/408896408.jpg?k=a03783216a34dd0df1a21cf7bb6527df3b68c3d92bd54b7b4d06b0e116705408&o=&hp=1",
+334.90, "sim", "Queen Size", "não");
+
+
 
 select * from quartos where situacao = "não" order by preco asc;
 
@@ -177,11 +185,36 @@ create table clientes (
     foreign key (idQuarto) references quartos (idQuarto)
 );
 
+describe clientes;
+
+/* VERIFICAR QUAIS QUARTOS ESTEJAM DISPONÍVEIS */
+select * from quartos where situacao = "não";
 
 
+insert into clientes (nomeCompleto, cpf, rg, email, celular, numeroCartao, nomeTitular, validade, cvv, checkin, checkout, idQuarto) values
+("José de Assis", "829.942.570-09", "48.353.888-7", "josedeassis@gmail.com", "(96) 99338-2803", "5526 4863 8286 2543", "José de Assis", "2025-03-31", "452",
+"2023-11-02 14:00:00", "2023-11-05 12:00:00", 1);
 
 
+insert into clientes (nomeCompleto, cpf, rg, email, celular, numeroCartao, nomeTitular, validade, cvv, checkin, checkout, idQuarto) values
+("Cecília Vitória Barros", "839.909.408-05", "32.059.425-7", "ceciliabarros@gmail.com", "(11) 99134-4682", "3767 044740 87387", "Cecília Vitória Barros",
+"2025-02-28", "924", "2023-10-21 14:00:00", "2023-10-25 12:00:00", 3);
 
+
+select * from clientes;
+
+/* Buscar TODAS AS INFORMAÇÕES da tabela quartos que está vinculada à tabela clientes pelo campo idQuarto */
+select * from quartos inner join clientes on quartos.idQuarto = clientes.idQuarto;
+
+/*Buscar o nome completo e o celular do cliente que alugou o quarto de número 505, pois a tabela quartos está vinculada à tabela clientes pelo campo idQuarto */
+select clientes.nomeCompleto, clientes.celular from quartos inner join clientes on quartos.idQuarto = clientes.idQuarto where numeroQuarto = 505;
+
+/*Buscar o nome completo e data/horário do checkout do cliente que alugou o quarto de número 505 */
+select clientes.nomeCompleto as Nome, date_format(clientes.checkout, '%d/%m/%Y - %H:%i') as Checkout from quartos inner join clientes
+on quartos.idQuarto = clientes.idQuarto where numeroQuarto = 505;
+
+
+/* ATIVIDADE AVALIATIVA */
 
 
 
