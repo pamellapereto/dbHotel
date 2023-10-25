@@ -168,6 +168,39 @@ select * from quartos where varanda = "sim" and cafeDaManha = "sim" and situacao
 select * from quartos where preco < 700.00 and situacao = "não";
 
 
+/*dataPedido timestamp default current_timestamp significa que a data do pedido será a mesma do sistema, ou seja, a data atual
+statusPedido significa que a situação do pedido será uma das seguintes opções: Pendente, Finalizado, Cancelado
+*/
+create table pedido (
+	idPedido int primary key auto_increment,
+    dataPedido timestamp default current_timestamp,
+    statusPedido enum("Pendente", "Finalizado", "Cancelado") not null,
+    idCliente int not null,
+    foreign key (idCliente) references clientes(idCliente)
+);
+
+/* ABERTURA DE PEDIDOS */
+insert into pedido (statusPedido, idCliente) values ("Pendente", 1);
+insert into pedido (statusPedido, idCliente) values ("Finalizado", 2);
+
+
+select * from pedido;
+
+
+create table reservas (
+	idReserva int primary key auto_increment,
+    idPedido int not null,
+    idQuarto int not null,
+	foreign key (idPedido) references pedido(idPedido),
+    foreign key (idQuarto) references quartos(idQuarto)
+);
+
+
+
+
+describe pedido;
+
+
 create table clientes (
 	idCliente int primary key auto_increment,
     nomeCompleto varchar(100) not null,
@@ -180,28 +213,40 @@ create table clientes (
     validade date not null,
     cvv char(3) not null,
     checkin datetime not null,
-    checkout datetime not null,
-    idQuarto int not null,
-    foreign key (idQuarto) references quartos (idQuarto)
+    checkout datetime not null
 );
 
+
 describe clientes;
+
+
+drop table clientes;
+
+
+
+
+
+
 
 /* VERIFICAR QUAIS QUARTOS ESTEJAM DISPONÍVEIS */
 select * from quartos where situacao = "não";
 
 
-insert into clientes (nomeCompleto, cpf, rg, email, celular, numeroCartao, nomeTitular, validade, cvv, checkin, checkout, idQuarto) values
+insert into clientes (nomeCompleto, cpf, rg, email, celular, numeroCartao, nomeTitular, validade, cvv, checkin, checkout) values
 ("José de Assis", "829.942.570-09", "48.353.888-7", "josedeassis@gmail.com", "(96) 99338-2803", "5526 4863 8286 2543", "José de Assis", "2025-03-31", "452",
-"2023-11-02 14:00:00", "2023-11-05 12:00:00", 1);
+"2023-11-02 14:00:00", "2023-11-05 12:00:00");
 
 
-insert into clientes (nomeCompleto, cpf, rg, email, celular, numeroCartao, nomeTitular, validade, cvv, checkin, checkout, idQuarto) values
+insert into clientes (nomeCompleto, cpf, rg, email, celular, numeroCartao, nomeTitular, validade, cvv, checkin, checkout) values
 ("Cecília Vitória Barros", "839.909.408-05", "32.059.425-7", "ceciliabarros@gmail.com", "(11) 99134-4682", "3767 044740 87387", "Cecília Vitória Barros",
-"2025-02-28", "924", "2023-10-21 14:00:00", "2023-10-25 12:00:00", 3);
+"2025-02-28", "924", "2023-10-21 14:00:00", "2023-10-25 12:00:00");
 
 
 select * from clientes;
+
+
+
+
 
 /* Buscar TODAS AS INFORMAÇÕES da tabela quartos que está vinculada à tabela clientes pelo campo idQuarto */
 select * from quartos inner join clientes on quartos.idQuarto = clientes.idQuarto;
@@ -214,7 +259,7 @@ select clientes.nomeCompleto as Nome, date_format(clientes.checkout, '%d/%m/%Y -
 on quartos.idQuarto = clientes.idQuarto where numeroQuarto = 505;
 
 
-/* ATIVIDADE AVALIATIVA */
+
 
 
 
