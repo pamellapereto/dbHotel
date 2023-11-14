@@ -1,10 +1,8 @@
 /* Banco de dados para gerenciamento de um hotel */
-
 create database dbHotel;
-
 show databases;
-
 use dbHotel;
+
 
 create table funcionarios (
 	idFunc int primary key auto_increment,
@@ -14,7 +12,6 @@ create table funcionarios (
     senha varchar(255) not null,
     cargo varchar(20)
 );
-
 describe funcionarios;
 
 insert into funcionarios(nomeFunc, login, email, senha, cargo) values ("Administrador", "admin", "administrador@gmail.com", md5("admin"), "Administrador");
@@ -30,6 +27,7 @@ select idFunc as ID_Funcionario, nomeFunc as Nome_Funcionario from funcionarios 
 select IDFunc as ID_Funcionario, nomeFunc as Nome_Funcionario, cargo as Cargo_Funcionario from funcionarios order by IDFunc desc;
 select IDFunc as ID_Funcionario, nomeFunc as Nome_Funcionario, cargo as Cargo_Funcionario from funcionarios where cargo <> 'null' order by IDFunc desc;
 select * from funcionarios where cargo = "Gerência" order by nomeFunc asc;
+
 
 create table quartos (
 	idQuarto int primary key auto_increment,
@@ -47,7 +45,6 @@ create table quartos (
     tipoCama varchar(20),
     varanda char(3)
 );
-
 describe quartos;
 
 insert into quartos (andar, numeroQuarto, tipoQuarto, ocupacaoMax, situacao, nome, descricao, foto, preco, cafeDaManha, precoCafe, tipoCama, varanda) values
@@ -72,7 +69,8 @@ select * from quartos where situacao = "não" order by preco asc;
 select * from quartos where cafeDaManha = "sim" and situacao = "não";
 select * from quartos where varanda = "sim" and cafeDaManha = "sim" and situacao = "não";
 select * from quartos where preco < 700.00 and situacao = "não";
- 
+
+
  create table clientes (
 	idCliente int primary key auto_increment,
     nomeCompleto varchar(100) not null,
@@ -81,7 +79,6 @@ select * from quartos where preco < 700.00 and situacao = "não";
     email varchar(50) unique,
     celular varchar(20) not null
 );
-
 describe clientes;
 
 insert into clientes (nomeCompleto, cpf, rg, email, celular) values
@@ -99,7 +96,6 @@ create table pedido (
     idCliente int not null,
     foreign key (idCliente) references clientes(idCliente)
 );
-
 describe pedido;
 
 insert into pedido (statusPedido, idCliente) values ("Pendente", 1);
@@ -118,14 +114,29 @@ create table reservas (
     checkin datetime not null,
     checkout datetime not null
 );
-
 describe reservas;
 
 insert into reservas (idPedido, idQuarto, checkin, checkout) values (1, 1, "2023-10-21 14:00:00", "2023-10-25 12:00:00");
 insert into reservas (idPedido, idQuarto, checkin, checkout) values (1, 3, "2023-10-21 14:00:00", "2023-10-25 12:00:00");
 
+insert into reservas (idPedido, idQuarto, checkin, checkout) values (2, 2, "2023-10-17 14:00:00", "2023-10-23 12:00:00");
+
 select * from reservas;
-select reservas.idReserva, pedido.idPedido, quartos.idQuarto, quartos.nome, quartos.andar, quartos.numeroQuarto
-from (reservas inner join pedido on reservas.idPedido = pedido.idPedido)
-inner join quartos on reservas.idQuarto = quartos.idQuarto;
+
+
+/*OBJETIVO: selecionar o nome do cliente, seu cpf e email, o id do pedido do cliente, a data do pedido, quais quartos fazem parte desse pedido, os tipos dos quartos e seus nomes, assim como
+os andares em que estão, os números de cada quarto, seus preços e suas datas de checkin e checkout. */
+
+
+select clientes.nomeCompleto, clientes.cpf, clientes.email, pedido.idPedido, pedido.dataPedido, quartos.tipoQuarto,
+quartos.nome, quartos.andar, quartos.numeroQuarto, quartos.preco, reservas.checkin, reservas.checkout from
+clientes inner join pedido on clientes.idCliente = pedido.idCliente inner join
+reservas on reservas.idPedido = pedido.idPedido inner join quartos
+on reservas.idQuarto = quartos.idQuarto;
+
+
+/*Soma total do pedido feito pelo cliente */
+select sum(quartos.preco) as Total from reservas inner join quartos on reservas.idQuarto = quartos.idQuarto where idPedido = 1;
+
+
 
