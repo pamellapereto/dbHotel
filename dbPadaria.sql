@@ -138,6 +138,7 @@ select * from produtos where ingredientesProduto like "%gluten%";
 /*QUERO UM RESULTADO AO MENOS! */
 
 select * from produtos where ingredientesProduto not like "%trigo%" and precoProduto <= 7.90; 
+<<<<<<< HEAD
 
 
 
@@ -147,6 +148,8 @@ where itensPedidos.quantidade > 0;
 
 
 select nomeProduto, estoqueProduto from produtos;
+=======
+>>>>>>> 2466fa39047dca750b88acb3a13c601f8360d7cc
 
 
 
