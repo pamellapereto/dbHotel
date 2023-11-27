@@ -54,6 +54,9 @@ insert into produtos (nomeProduto, ingredientesProduto, pesoProduto, validadePro
 estoqueProduto, categoriaProduto, idFornecedor) values
 ("Pão italiano", "trigo", 0.450, "2023-12-07", 7.90, 5, "Salgados", 1);
 
+insert into produtos (nomeProduto, ingredientesProduto, pesoProduto, validadeProduto, precoProduto,
+estoqueProduto, categoriaProduto, idFornecedor) values
+("Pão francês", "polvilho doce", 0.300, "2023-12-07", 7.90, 5, "Salgados", 1);
 
 select * from produtos;
 
@@ -128,18 +131,22 @@ select * from produtos where validadeProduto > curdate();
 
 
 
-
 /* Filtrar produtos que contenham um ingrediente específico */
 select * from produtos where ingredientesProduto like "%gluten%";
 
 /*ATIVIDADE: FILTRAR PÃES QUE NÃO SEJAM FEITOS À BASE DE FARINHA DE TRIGO, COM VALOR ATÉ 7.90*/
 /*QUERO UM RESULTADO AO MENOS! */
 
-select * from produtos where ingredientesProduto like "%f%" and precoProduto <= 7.90; 
+select * from produtos where ingredientesProduto not like "%trigo%" and precoProduto <= 7.90; 
 
 
 
+update itensPedidos inner join produtos on itensPedidos.idProduto = produtos.idProduto
+set produtos.estoqueProduto = produtos.estoqueProduto - itensPedidos.quantidade
+where itensPedidos.quantidade > 0;
 
+
+select nomeProduto, estoqueProduto from produtos;
 
 
 
