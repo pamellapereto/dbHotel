@@ -134,5 +134,18 @@ on reservas.idQuarto = quartos.idQuarto;
 select sum(quartos.preco) as Total from reservas inner join quartos on reservas.idQuarto = quartos.idQuarto where idPedido = 1;
 
 
+/*Cliente Cecília Vitória Barros - idPedido 2
+Quarto reservado: Superior Premier Twin (7º andar, número 703, preço/diária: R$ 1150.90)
+Check-in: 27/11/2023 às 10h00
+Check-out: 08/12/2023 às 10h00
+*/
+update reservas inner join quartos on reservas.idQuarto = quartos.idQuarto
+set quartos.situacao = "sim" where reservas.checkout < current_timestamp();
 
+update reservas inner join quartos on reservas.idQuarto = quartos.idQuarto
+set quartos.situacao = "sim" where reservas.checkin < current_timestamp();
 
+update reservas inner join quartos on reservas.idQuarto = quartos.idQuarto
+set quartos.situacao = "sim" where reservas.checkin < current_timestamp();
+
+select * from quartos;
