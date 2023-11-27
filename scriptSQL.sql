@@ -123,11 +123,6 @@ insert into reservas (idPedido, idQuarto, checkin, checkout) values (2, 2, "2023
 
 select * from reservas;
 
-
-/*OBJETIVO: selecionar o nome do cliente, seu cpf e email, o id do pedido do cliente, a data do pedido, quais quartos fazem parte desse pedido, os tipos dos quartos e seus nomes, assim como
-os andares em que estão, os números de cada quarto, seus preços e suas datas de checkin e checkout. */
-
-
 select clientes.nomeCompleto, clientes.cpf, clientes.email, pedido.idPedido, pedido.dataPedido, quartos.tipoQuarto,
 quartos.nome, quartos.andar, quartos.numeroQuarto, quartos.preco, reservas.checkin, reservas.checkout from
 clientes inner join pedido on clientes.idCliente = pedido.idCliente inner join
@@ -137,6 +132,7 @@ on reservas.idQuarto = quartos.idQuarto;
 
 /*Soma total do pedido feito pelo cliente */
 select sum(quartos.preco) as Total from reservas inner join quartos on reservas.idQuarto = quartos.idQuarto where idPedido = 1;
+
 
 
 

@@ -131,7 +131,6 @@ select * from produtos where validadeProduto > curdate();
 
 
 
-
 /* Filtrar produtos que contenham um ingrediente específico */
 select * from produtos where ingredientesProduto like "%gluten%";
 
@@ -139,6 +138,18 @@ select * from produtos where ingredientesProduto like "%gluten%";
 /*QUERO UM RESULTADO AO MENOS! */
 
 select * from produtos where ingredientesProduto not like "%trigo%" and precoProduto <= 7.90; 
+<<<<<<< HEAD
+
+
+
+update itensPedidos inner join produtos on itensPedidos.idProduto = produtos.idProduto
+set produtos.estoqueProduto = produtos.estoqueProduto - itensPedidos.quantidade
+where itensPedidos.quantidade > 0;
+
+
+select nomeProduto, estoqueProduto from produtos;
+=======
+>>>>>>> 2466fa39047dca750b88acb3a13c601f8360d7cc
 
 
 
