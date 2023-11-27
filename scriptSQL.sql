@@ -142,6 +142,7 @@ Check-out: 08/12/2023 às 10h00
 update reservas inner join quartos on reservas.idQuarto = quartos.idQuarto
 set quartos.situacao = "sim" where reservas.checkout < current_timestamp();
 
+<<<<<<< HEAD
 update reservas inner join quartos on reservas.idQuarto = quartos.idQuarto
 set quartos.situacao = "sim" where reservas.checkin < current_timestamp();
 
@@ -149,3 +150,6 @@ update reservas inner join quartos on reservas.idQuarto = quartos.idQuarto
 set quartos.situacao = "sim" where reservas.checkin < current_timestamp();
 
 select * from quartos;
+=======
+
+>>>>>>> 45c24e910d9d2b84c6d346c73f0efbf0ef4cd18d
